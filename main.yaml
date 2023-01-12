@@ -8,3 +8,4 @@
   - role: roles/netplan
   - role: roles/sshd
   - role: roles/vscode
+  - role: roles/virtualization
