@@ -1,0 +1,51 @@
+- name: check oh-my-zsh
+  stat: 
+    path: ~/.oh-my-zsh
+  register: zsh
+  become: "{{ item }}"
+
+- name: test become
+  debug:
+    var: item
+
+- name: test zsh
+  debug:
+    var: zsh
+
+- name: install oh-my-zsh
+  shell: sh -c "ZSH= $(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+  when: zsh.stat.exists == false
+  become: "{{ item }}"
+
+- name: check zsh-autosuggestions
+  stat: 
+    path: ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions
+  register: autosuggestions
+  become: "{{ item }}"
+
+- name: install zsh-autosuggestions
+  git:
+    repo: https://github.com/zsh-users/zsh-autosuggestions
+    dest: ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions
+  when: autosuggestions.stat.exists == false
+  become: "{{ item }}"
+
+- name: check zsh-highlighting
+  stat: 
+    path: ~/.zsh/zsh-syntax-highlighting
+  register: highlighting
+  become: "{{ item }}"
+
+- name: install zsh-highlighting
+  git:
+    repo: https://github.com/zsh-users/zsh-syntax-highlighting
+    dest:  ~/.zsh/
+  when: highlighting.stat.exists == false
+  become: "{{ item }}"
+
+- name: configure oh-my-zsh
+  copy:
+    src: files/.zshrc
+    dest: ~/.zshrc
+    mode: 0644
+  become: "{{ item }}"

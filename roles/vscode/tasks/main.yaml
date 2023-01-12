@@ -1,0 +1,33 @@
+- name: setup the vscode repository
+  block:
+    - name: install apt req
+      apt:
+        pkg:
+          - ca-certificates
+          - curl
+          - apt-transport-https
+        state: present
+        update_cache: yes
+    - name: check gpg key
+      stat: path=/etc/apt/trusted.gpg.d/microsoft.asc
+      register: gpg_key
+    - name: upload gpg key
+      get_url:
+        url: "https://packages.microsoft.com/keys/microsoft.asc"
+        dest: "/etc/apt/trusted.gpg.d/microsoft.asc"
+        mode: 0755
+        force: true
+        validate_certs: false
+      when: not gpg_key.stat.exists
+    - name: add apt-repo
+      apt_repository:
+        repo: "deb [arch=amd64 signed-by=/etc/apt/trusted.gpg.d/microsoft.asc] https://packages.microsoft.com/repos/vscode stable main"
+        state: present
+        filename: microsoft
+        update_cache: yes
+  become: true
+- name: install vscode
+  apt:
+    name: code
+    state: present
+  become: true

@@ -1,0 +1,48 @@
+- name: setup the kubectl repository
+  block:
+    - name: install apt req
+      apt:
+        pkg:
+          - ca-certificates
+          - curl
+          - apt-transport-https
+        state: present
+        update_cache: yes
+    - name: check gpg key
+      stat: path=/etc/apt/keyrings/kubernetes-archive-keyring.gpg
+      register: gpg_key
+    - name: upload gpg key
+      get_url:
+        url: "https://packages.cloud.google.com/apt/doc/apt-key.gpg"
+        dest: "/etc/apt/keyrings/kubernetes-archive-keyring.gpg"
+        mode: 0755
+        force: true
+        validate_certs: false
+      when: not gpg_key.stat.exists
+    - name: add apt-repo
+      apt_repository:
+        repo: "deb [signed-by=/etc/apt/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main"
+        state: present
+        filename: kubernetes
+        update_cache: yes
+  become: true
+- name: install kubectl
+  apt:
+    pkg:
+      - kubectl
+    state: present
+  become: true
+
+- name: setup kubectl
+  block:
+    - name: add completetion bash
+      lineinfile:
+        dest: ~/.bashrc
+        line: 'source <(kubectl completion bash)'
+        state: present
+
+    - name: add completetion zsh
+      lineinfile:
+        dest: ~/.zshrc
+        line: 'source <(kubectl completion zsh)'
+        state: present

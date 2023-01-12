@@ -1,0 +1,72 @@
+- name: install qemu-kvm
+  apt:
+    pkg:
+      - qemu-kvm
+      - libvirt-daemon-system
+      - libvirt-clients
+      - bridge-utils
+      - virt-manager
+      - ssh-askpass-gnome
+  state: present
+  update_cache: true
+- name: startup libvirtd
+  systemd:
+    name: libvirtd
+    state: restarted
+    enabled: yes
+- name: setup libvirtd
+  block:
+    - name: add user to docker group
+      user:
+        name: "{{ username }}"
+        groups: 
+          - kvm
+          - libvirtd
+        append: yes
+  become: true
+- name: setup vagrantbox
+  get_url:
+    url: "https://hashicorp-releases.yandexcloud.net/vagrant/{{ vagrant_version }}/vagrant_{{ vagrant_version }}-1_amd64.deb"
+    dest: "/tmp/vagrant_{{ vagrant_version }}_x86_64.deb"
+
+- name: install vagrant box
+  apt:
+    name: "/tmp/vagrant_{{ vagrant_version }}_x86_64.deb"
+    state: present
+  become: true
+
+- name: delete vagrantbox file
+  file:
+    path: "/tmp/vagrant_{{ vagrant_version }}_x86_64.deb"
+    state: absent
+
+- name: install packer
+  unarchive:
+    src: "https://hashicorp-releases.yandexcloud.net/packer/{{ packer_version }}/packer_{{ packer_version }}_linux_amd64.zip"
+    dest: /usr/bin/
+    mode: 0755
+    owner: root
+    group: root
+    remote_src: yes
+  become: true
+
+- name: install terraform
+  unarchive:
+    src: "https://hashicorp-releases.yandexcloud.net/terraform/{{ terraform_version }}/terraform_{{ packer_version }}_linux_amd64.zip"
+    dest: /usr/bin/
+    mode: 0755
+    owner: root
+    group: root
+    remote_src: yes
+  become: true
+
+#- name: setup terraform
+#  copy:
+#    src: files/.terraformrc
+#    dest: ~/.terraformrc
+
+
+
+
+
+

@@ -1,0 +1,47 @@
+- name: setup the docker repository
+  block:
+    - name: install apt req
+      apt:
+        pkg:
+          - ca-certificates
+          - curl
+          - apt-transport-https
+        state: present
+        update_cache: yes
+    - name: check gpg key
+      stat: path=/etc/apt/trusted.gpg.d/docker.asc
+      register: gpg_key
+    - name: upload gpg key
+      get_url:
+        url: "https://download.docker.com/linux/ubuntu/gpg"
+        dest: "/etc/apt/trusted.gpg.d/docker.asc"
+        mode: 0755
+        force: true
+        validate_certs: false
+      when: not gpg_key.stat.exists
+    - name: add apt-repo
+      apt_repository:
+        repo: "deb [arch=amd64 signed-by=/etc/apt/trusted.gpg.d/docker.asc] https://download.docker.com/linux/ubuntu {{ ansible_lsb.codename }} stable"
+        state: present
+        filename: docker 
+        update_cache: yes
+  become: true
+- name: install docker
+  apt:
+    pkg:
+      - docker-ce
+      - docker-ce-cli
+      - containerd.io
+      - docker-compose-plugin
+      - docker-compose
+    state: present
+  become: true
+
+- name: setup docker
+  block:
+    - name: add user to docker group
+      user:
+        name: "{{ username }}"
+        groups: docker
+        append: yes
+  become: true

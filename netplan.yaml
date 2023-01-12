@@ -1,0 +1,5 @@
+- name: configure my work pc
+  hosts: all
+  become: yes
+  roles:
+  - role: roles/netplan

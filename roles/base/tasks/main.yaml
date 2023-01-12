@@ -1,0 +1,21 @@
+- name: install base packages
+  apt:
+    pkg:
+      - bash
+      - vim
+      - nano
+      - git
+      - keepass2
+      - nmap
+    state: present
+    update_cache: true
+  become: true
+
+- name: Set a hostname
+  hostname:
+    name: "{{ hostname }}"
+
+- name: setup git name
+  shell: "git config --global user.name {{ ldap_name }}"
+- name: setup git email
+  shell: "git config --global user.email {{ ldap_email }}"

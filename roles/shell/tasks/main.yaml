@@ -1,0 +1,30 @@
+- name: install shell packages
+  apt:
+    pkg:
+      - "{{ shell }}"
+      - powerline
+      - fonts-powerline
+    state: present
+  become: true
+
+- name: "configure shell"
+  include_tasks: zsh.yaml
+  when: shell == "zsh"
+  loop:
+    - yes
+    - no
+#  loop_control:
+#    loop_var: become
+
+- name: setup default shell
+  user:
+    name: "{{ username }}"
+    shell: "/bin/{{ shell }}"
+  become: yes
+
+- name: setup default root shell
+  user:
+    name: root
+    shell: "/usr/bin/{{ shell }}"
+  become: yes
+  

@@ -1,0 +1,12 @@
+- name: install 
+  apt:
+    name: openssh-server
+    state: latest
+    update_cache: yes
+  become: true
+- name: start srvice
+  systemd:
+    name: ssh
+    state: restarted
+    enabled: yes
+  become: true
