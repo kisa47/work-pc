@@ -13,4 +13,4 @@ all:
       shell: zsh
       terraform_version: 1.3.7
       packer_version: 1.8.5
-      vagrant-version: 2.3.4
+      vagrant_version: 2.3.4

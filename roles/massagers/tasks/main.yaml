@@ -1,0 +1,43 @@
+- name: Create vkteams dir
+  file:
+    path: /opt/vkteams
+    state: directory
+  become: true
+
+- name: download vk-teams
+  unarchive:
+    src: "https://vkteams-www.hb.bizmrg.com/linux/x64/vkteams.tar.xz"
+    dest: /opt/vkteams
+    mode: 0755
+    owner: root
+    group: root
+    remote_src: yes
+  become: true
+
+- name: Create simlink vk-teams
+  file:
+    src: /opt/vkteams/vkteams
+    dest: /usr/local/bin/vkteams
+    state: link
+  become: true
+
+- name: Create shortcut Vkteams
+  copy:
+    src: files/vkteams.desktop
+    dest: /usr/share/applications/vkteams.desktop
+    mode: 0644
+  become: true
+    
+
+- name: Install rocket.chat
+  community.general.snap:
+    name:
+      - rocketchat-desktop
+  become: true
+
+- name: Install telegram
+  apt:
+    pkg:
+      - telegram-desktop
+    state: present
+  become: true

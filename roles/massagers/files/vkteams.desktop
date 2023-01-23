@@ -1,0 +1,14 @@
+[Desktop Entry]
+Name=Vkteams Desktop
+Comment=Official desktop version of Vkteams messaging app
+TryExec=vkteams
+Exec=vkteams
+Icon=/opt/vkteams/vkteams
+Terminal=false
+StartupWMClass=VkteamsDesktop
+Type=Application
+Categories=Chat;Network;InstantMessaging;Qt;
+Keywords=tg;chat;im;messaging;messenger;sms;tdesktop;
+Actions=Quit;
+SingleMainWindow=true
+QT_QPA_PLATFORM=wayland

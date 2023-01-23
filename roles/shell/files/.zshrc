@@ -73,6 +73,7 @@ ZSH_THEME="fox"
 plugins=(git extract ubuntu docker colored-man-pages colorize man)
 
 source $ZSH/oh-my-zsh.sh
+source ~/.zsh/zsh-syntax-highlighting.zsh
 
 # User configuration
 

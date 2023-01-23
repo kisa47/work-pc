@@ -15,6 +15,7 @@
     name: libvirtd
     state: restarted
     enabled: yes
+  become: true
 - name: setup libvirtd
   block:
     - name: add user to docker group
@@ -22,24 +23,15 @@
         name: "{{ username }}"
         groups: 
           - kvm
-          - libvirtd
+          - libvirt
         append: yes
   become: true
-- name: setup vagrantbox
-  get_url:
-    url: "https://hashicorp-releases.yandexcloud.net/vagrant/{{ vagrant_version }}/vagrant_{{ vagrant_version }}-1_amd64.deb"
-    dest: "/tmp/vagrant_{{ vagrant_version }}_x86_64.deb"
 
 - name: install vagrant box
   apt:
-    name: "/tmp/vagrant_{{ vagrant_version }}_x86_64.deb"
+    deb: "https://hashicorp-releases.yandexcloud.net/vagrant/{{ vagrant_version }}/vagrant_{{ vagrant_version }}-1_amd64.deb"
     state: present
   become: true
-
-- name: delete vagrantbox file
-  file:
-    path: "/tmp/vagrant_{{ vagrant_version }}_x86_64.deb"
-    state: absent
 
 - name: install packer
   unarchive:
@@ -53,7 +45,7 @@
 
 - name: install terraform
   unarchive:
-    src: "https://hashicorp-releases.yandexcloud.net/terraform/{{ terraform_version }}/terraform_{{ packer_version }}_linux_amd64.zip"
+    src: "https://hashicorp-releases.yandexcloud.net/terraform/{{ terraform_version }}/terraform_{{ terraform_version }}_linux_amd64.zip"
     dest: /usr/bin/
     mode: 0755
     owner: root

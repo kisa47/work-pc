@@ -9,3 +9,4 @@
   - role: roles/sshd
   - role: roles/vscode
   - role: roles/virtualization
+  - role: roles/massagers
