@@ -8,6 +8,10 @@
           - apt-transport-https
         state: present
         update_cache: yes
+    - name: prepare apt
+      file:
+        path: /etc/apt/keyrings
+        state: directory
     - name: check gpg key
       stat: path=/etc/apt/keyrings/kubernetes-archive-keyring.gpg
       register: gpg_key
