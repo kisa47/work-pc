@@ -8,6 +8,7 @@
       - keepass2
       - nmap
       - traceroute
+      - chromium-browser
     state: present
     update_cache: true
   become: true
