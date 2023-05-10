@@ -4,7 +4,7 @@ all:
       ansible_host: 127.0.0.1
       ansible_connection: local
       ip_adress: 192.168.32.69/23
-      gateway4: 192.168.33.254
+      gateway4: 192.168.32.254
       nameservers: 192.168.128.2, 8.8.8.8
       ldap_name: v.surtsov
       ldap_email: v.surtsov@spacevm.org
