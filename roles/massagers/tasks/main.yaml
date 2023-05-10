@@ -35,9 +35,20 @@
       - rocketchat-desktop
   become: true
 
+- name: Add telegram repo
+  apt_repository:
+    repo: ppa:atareao/telegram
+
+- name: Install telegram
+  apt:
+    pkg:
+      - telegram
+    state: present
+  become: true
+
 - name: Install telegram
   apt:
     pkg:
       - telegram-desktop
-    state: present
+    state: absent
   become: true
