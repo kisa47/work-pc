@@ -4,14 +4,6 @@
   register: zsh
   become: "{{ item }}"
 
-- name: test become
-  debug:
-    var: item
-
-- name: test zsh
-  debug:
-    var: zsh
-
 - name: install oh-my-zsh
   shell: sh -c "ZSH= $(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
   when: zsh.stat.exists == false
