@@ -4,9 +4,14 @@
       - qemu-kvm
       - libvirt-daemon-system
       - libvirt-clients
+      - ruby-libvirt
+      - libvirt-dev
+      - ruby-dev
       - bridge-utils
       - virt-manager
       - ssh-askpass-gnome
+      - ruby-fog-libvirt
+
     state: present
     update_cache: true
   become: true
@@ -32,6 +37,11 @@
     deb: "https://hashicorp-releases.yandexcloud.net/vagrant/{{ vagrant_version }}/vagrant_{{ vagrant_version }}-1_amd64.deb"
     state: present
   become: true
+
+
+
+- name: Install libvirt plugin for wagrantbox
+  shell: vagrant plugin install vagrant-libvirt --plugin-clean-sources --plugin-source https://gems.ruby-china.com
 
 - name: install packer
   unarchive:
@@ -63,3 +73,4 @@
 
 
 
+ 
