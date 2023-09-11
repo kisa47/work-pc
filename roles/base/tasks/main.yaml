@@ -17,7 +17,8 @@
   hostname:
     name: "{{ hostname }}"
 
-- name: setup git name
-  shell: "git config --global user.name {{ ldap_name }}"
-- name: setup git email
-  shell: "git config --global user.email {{ ldap_email }}"
+- name: setup git configs
+  template:
+    src: gitconfig.j2
+    dest: ~/.gitconfig
+    mode: 0664
