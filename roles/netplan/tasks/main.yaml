@@ -2,7 +2,7 @@
   file:
     state: "{{ item }}"
     path: "/etc/netplan/"
-    owner: root # set your owner, group, and mode accordingly
+    owner: root
     group: root
     mode: '0755'
   with_items:

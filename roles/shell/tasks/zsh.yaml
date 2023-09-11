@@ -24,7 +24,7 @@
 
 - name: check zsh-highlighting
   stat: 
-    path: ~/.zsh/zsh-syntax-highlighting
+    path: ~/.zsh/zsh-syntax-highlighting.zsh
   register: highlighting
   become: "{{ item }}"
 

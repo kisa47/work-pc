@@ -4,9 +4,11 @@
     state: latest
     update_cache: yes
   become: true
+  register: install_sshd
 - name: start srvice
   systemd:
     name: ssh
     state: restarted
     enabled: yes
+  when: install_sshd is changed
   become: true

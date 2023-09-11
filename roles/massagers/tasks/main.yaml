@@ -3,6 +3,7 @@
     path: /opt/vkteams
     state: directory
   become: true
+  register: no_vkteams
 
 - name: download vk-teams
   unarchive:
@@ -13,6 +14,7 @@
     group: root
     remote_src: yes
   become: true
+  when: no_vkteams is changed
 
 - name: Create simlink vk-teams
   file:
@@ -31,8 +33,7 @@
 
 - name: Install rocket.chat
   community.general.snap:
-    name:
-      - rocketchat-desktop
+    name: rocketchat-desktop
   become: true
 
 - name: Add telegram repo
@@ -46,7 +47,7 @@
     state: present
   become: true
 
-- name: Install telegram
+- name: Remove old telegram
   apt:
     pkg:
       - telegram-desktop
