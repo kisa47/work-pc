@@ -1,12 +1,12 @@
 - name: configure my work pc
   hosts: all
   roles:
-  - role: roles/base
-  - role: roles/shell
-  - role: roles/docker
-  - role: roles/kubectl
-  - role: roles/netplan
-  - role: roles/sshd
-  - role: roles/vscode
-  - role: roles/virtualization
-  - role: roles/massagers
+  - role: base
+  - role: shell
+  - role: docker
+  - role: kubectl
+  - role: netplan
+  - role: sshd
+  - role: vscode
+  - role: virtualization
+  - role: massagers

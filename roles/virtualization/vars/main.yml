@@ -1,0 +1,3 @@
+---
+vagrant_from_mirror: false
+hashicorp_mirror: "https://hashicorp-releases.yandexcloud.net"

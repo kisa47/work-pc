@@ -15,12 +15,14 @@
     state: present
     update_cache: true
   become: true
+
 - name: startup libvirtd
   systemd:
     name: libvirtd
     state: restarted
     enabled: yes
   become: true
+  
 - name: setup libvirtd
   block:
     - name: add user to docker group
@@ -32,20 +34,42 @@
         append: yes
   become: true
 
-- name: install vagrant box
-  apt:
-    deb: "https://hashicorp-releases.yandexcloud.net/vagrant/{{ vagrant_version }}/vagrant_{{ vagrant_version }}-1_amd64.deb"
-    state: present
+- name: install vagrant
+  block:
+    - name: install vagrant from APT
+      block:
+        - name: Install latest version from APT
+          apt:
+            name: vagrant
+            state: present
+          when: vagrant_version is undefined
+        - name: Install {{ vagrant_version }} version from APT
+          apt:
+            name: "vagrant=1:{{ vagrant_version }}"
+            state: present
+          when: vagrant_version is defined
+        - name: Install libvirt plugin for wagrantbox from APT
+          apt:
+            name: vagrant-libvirt
+            state: present
+      when: not vagrant_from_mirror
+    
+    - name: install vagrant from Mirror
+      block:
+        - name: Install latest {{ vagrant_version }} from Mirror
+          apt:
+            deb: "{{ hashicorp_mirror }}/{{ vagrant_version }}/vagrant_{{ vagrant_version }}-1_amd64.deb"
+            state: present
+
+        - name: Install libvirt plugin for wagrantbox
+          shell: vagrant plugin install vagrant-libvirt --plugin-clean-sources --plugin-source https://gems.ruby-china.com
+
+      when: vagrant_from_mirror
   become: true
-
-
-
-- name: Install libvirt plugin for wagrantbox
-  shell: vagrant plugin install vagrant-libvirt --plugin-clean-sources --plugin-source https://gems.ruby-china.com
 
 - name: install packer
   unarchive:
-    src: "https://hashicorp-releases.yandexcloud.net/packer/{{ packer_version }}/packer_{{ packer_version }}_linux_amd64.zip"
+    src: "{{ hashicorp_mirror }}/packer/{{ packer_version }}/packer_{{ packer_version }}_linux_amd64.zip"
     dest: /usr/bin/
     mode: 0755
     owner: root
@@ -55,18 +79,13 @@
 
 - name: install terraform
   unarchive:
-    src: "https://hashicorp-releases.yandexcloud.net/terraform/{{ terraform_version }}/terraform_{{ terraform_version }}_linux_amd64.zip"
+    src: "{{ hashicorp_mirror }}/terraform/{{ terraform_version }}/terraform_{{ terraform_version }}_linux_amd64.zip"
     dest: /usr/bin/
     mode: 0755
     owner: root
     group: root
     remote_src: yes
   become: true
-
-#- name: setup terraform
-#  copy:
-#    src: files/.terraformrc
-#    dest: ~/.terraformrc
 
 
 
