@@ -1,14 +1,17 @@
-- name: clear configs
+- name: find network configs
+  find:
+    paths: /etc/netplan/
+    excludes: '01-netcfg.yaml'
+  register: config_files
+
+
+- name: delete network configs
   file:
-    state: "{{ item }}"
-    path: "/etc/netplan/"
-    owner: root
-    group: root
-    mode: '0755'
-  with_items:
-    - absent
-    - directory
+    state: absent
+    path: "{{ item.path }}"
+  with_items: "{{ config_files.files }}"
   become: true
+  register: delete_configs
 
 - name: add network config
   template:
@@ -18,10 +21,7 @@
     group: root
     mode: 0640
   become: true
-
-- name: update config
-  shell: netplan apply
-  become: true
+  register: update_config
 
 - name: disable
   systemd:
@@ -35,7 +35,6 @@
     - NetworkManager-dispatcher
     - network-manager.service
     - NetworkManager
-    - networkd-dispatcher
   ignore_errors: true
 - name: delete Network Manager
   apt:
@@ -43,3 +42,15 @@
     state: absent
     purge: true
   become: true
+
+- name: Install network-manager from snap
+  community.general.snap:
+    name: network-manager
+    options:
+     - defaultrenderer=false
+  become: true
+
+- name: update config
+  shell: netplan apply
+  become: true
+  when: update_config is changed or delete_configs is changed

@@ -9,6 +9,7 @@
       - nmap
       - traceroute
       - chromium-browser
+      - shutter
     state: present
     update_cache: true
   become: true
