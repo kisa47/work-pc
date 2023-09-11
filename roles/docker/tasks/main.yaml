@@ -45,3 +45,19 @@
         groups: docker
         append: yes
   become: true
+
+- name: add docker-settings
+  template:
+    src: daemon.json.j2
+    dest: /etc/docker/daemon.json
+  register: change_docker_settings
+  when: ansible_insecure_registries is defined or ansible_registry_mirrors is defined
+  become: true
+
+- name: restart docker daemon
+  systemd:
+    name: docker
+    state: restarted
+    enabled: yes
+  when: change_docker_settings is changed
+  become: true

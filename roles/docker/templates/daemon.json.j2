@@ -1,0 +1,9 @@
+{
+{% if ansible_insecure_registries is defined %}
+        "insecure-registries" : ["{{ ansible_insecure_registries }}"]{% if ansible_registry_mirrors is defined %},
+{% endif %}
+{% endif %}
+{% if ansible_registry_mirrors is defined %}
+        "registry-mirrors" : ["{{ ansible_registry_mirrors }}"]{% endif %}
+
+}
