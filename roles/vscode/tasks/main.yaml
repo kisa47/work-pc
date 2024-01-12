@@ -31,3 +31,14 @@
     name: code
     state: present
   become: true
+
+- name: Get VS Code extensions
+  shell: code --list-extensions
+  register: vscode_extensions
+
+- name: install exctention
+  shell: code --install-extension {{ item }}
+  when: item not in vscode_extensions.stdout_lines
+  loop:
+    "{{vscode_extentions}}"
+

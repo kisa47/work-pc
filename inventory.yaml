@@ -16,3 +16,20 @@ all:
       vagrant_version: 2.3.4
       ansible_insecure_registries: "https://192.168.150.193:5000"
       ansible_registry_mirrors: "https://docker-proxy.nexus.space.team"
+      vscode_extentions:
+        - ms-azuretools.vscode-docker
+        - MS-CEINTL.vscode-language-pack-ru
+        - ms-python.isort
+        - ms-python.python
+        - ms-python.vscode-pylance
+        - ms-toolsai.jupyter
+        - ms-toolsai.jupyter-keymap
+        - ms-toolsai.jupyter-renderers
+        - ms-toolsai.vscode-jupyter-cell-tags
+        - ms-toolsai.vscode-jupyter-slideshow
+        - ms-vscode-remote.remote-containers
+        - ms-vscode-remote.remote-ssh
+        - ms-vscode-remote.remote-ssh-edit
+        - ms-vscode.remote-explorer
+        - puppet.puppet-vscode
+        - ms-kubernetes-tools.vscode-kubernetes-tools
