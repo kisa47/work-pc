@@ -10,3 +10,4 @@
   - role: vscode
   - role: virtualization
   - role: massagers
+  - role: go
