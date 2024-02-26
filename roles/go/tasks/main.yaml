@@ -1,0 +1,40 @@
+- name: Check GO version
+  command: 'go version'
+  register: go_version_check
+  ignore_errors: True
+
+- name: install Go
+  block:
+    - name: delete GO directory
+      become: True
+      file:
+        state: absent
+        dest: '{{ golang_install_dir }}'
+
+    - name: Create GO directory
+      become: True
+      file:
+        state: directory
+        owner: root
+        group: root
+        mode: 'u=rwx,go=rx'
+        dest: '{{ golang_install_dir }}'
+
+    - name: Unpacking Go
+      become: True
+      unarchive:
+        src: '{{ golang_mirror }}/{{ golang_filename }}'
+        remote_src: True
+        extra_opts: '--strip-components=1'
+        dest: '{{ golang_install_dir }}'
+        owner: root
+        group: root
+        creates: '{{ golang_install_dir }}/bin'
+
+    - name: Create simlink vk-teams
+      become: True
+      file:
+        src: "{{ golang_install_dir }}/bin/go"
+        dest: /usr/local/bin/go
+        state: link
+  when: golang_version not in go_version_check.stdout
