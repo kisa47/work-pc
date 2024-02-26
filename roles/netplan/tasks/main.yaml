@@ -26,7 +26,7 @@
 - name: disable
   systemd:
     name: "{{ item }}"
-    state: stopped
+    state: enable
     enabled: false
     masked: true
   become: true
@@ -36,6 +36,7 @@
     - network-manager.service
     - NetworkManager
   ignore_errors: true
+  
 - name: delete Network Manager
   apt:
     name: network-manager
@@ -44,13 +45,20 @@
   become: true
 
 - name: Install network-manager from snap
-  community.general.snap:
+  snap:
     name: network-manager
-    options:
-     - defaultrenderer=false
   become: true
 
 - name: update config
   shell: netplan apply
   become: true
-  when: update_config is changed or delete_configs is changed
+  #when: update_config is changed or delete_configs is changed
+
+- name: setup resolf.conf
+  file:
+    state: link
+    src: /run/systemd/resolve/resolv.conf
+    dest: /etc/resolv.conf
+    owner: root
+    group: root
+  become: true
