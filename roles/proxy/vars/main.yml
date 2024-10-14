@@ -1,0 +1,5 @@
+---
+tinyproxy_port: 10001
+tinyproxy_allow: 0.0.0.0/0
+tinyproxy_username: space
+tinyproxy_password: BD2bdJS

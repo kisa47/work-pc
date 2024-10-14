@@ -3,8 +3,8 @@ all:
     local:
       ansible_host: 127.0.0.1
       ansible_connection: local
-      ip_adress: 192.168.32.69/23
-      gateway4: 192.168.32.254
+      ip_adress: 10.244.0.69/16
+      gateway4: 10.244.255.254
       nameservers: 192.168.128.2, 8.8.8.8
       ldap_name: v.surtsov
       ldap_email: v.surtsov@spacevm.org
@@ -33,3 +33,5 @@ all:
         - ms-vscode.remote-explorer
         - puppet.puppet-vscode
         - ms-kubernetes-tools.vscode-kubernetes-tools
+        - ms-python.debugpy
+        

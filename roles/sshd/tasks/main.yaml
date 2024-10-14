@@ -5,7 +5,7 @@
     update_cache: yes
   become: true
   register: install_sshd
-- name: start srvice
+- name: start srevice
   systemd:
     name: ssh
     state: restarted

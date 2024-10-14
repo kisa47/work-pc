@@ -26,10 +26,11 @@
         filename: microsoft
         update_cache: yes
   become: true
+
 - name: install vscode
   apt:
     name: code
-    state: present
+    state: latest
   become: true
 
 - name: Get VS Code extensions

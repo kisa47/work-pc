@@ -33,7 +33,7 @@
       - docker-ce-cli
       - containerd.io
       - docker-compose-plugin
-      - docker-compose
+      - docker-buildx-plugin
     state: present
   become: true
 

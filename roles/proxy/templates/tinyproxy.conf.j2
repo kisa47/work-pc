@@ -1,0 +1,27 @@
+##User/Group to use after dropping root
+User tinyproxy
+Group tinyproxy
+
+##Port and address to bind to
+Port {{ tinyproxy_port }}
+Allow {{ tinyproxy_allow }}
+
+##File locations
+DefaultErrorFile "/usr/local/share/tinyproxy/default.html"
+StatFile "/usr/local/share/tinyproxy/stats.html"
+LogFile "/usr/local/var/log/tinyproxy/tinyproxy.log"
+LogLevel Info
+PidFile "/var/run/tinyproxy.pid"
+
+##Authentication
+BasicAuth {{ tinyproxy_username }} {{ tinyproxy_password }}
+
+##Threading
+StartServers 5
+MinSpareServers 5
+MaxSpareServers 10 
+MaxRequestsPerChild 0
+
+##Connection
+Timeout 600
+MaxClients 100
