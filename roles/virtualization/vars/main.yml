@@ -1,3 +1,5 @@
 ---
 vagrant_from_mirror: false
+packer_from_mirror: false
 hashicorp_mirror: "https://hashicorp-releases.yandexcloud.net"
+ruby_mirror: "https://rubygems.org"

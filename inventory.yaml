@@ -3,9 +3,9 @@ all:
     local:
       ansible_host: 127.0.0.1
       ansible_connection: local
-      ip_adress: 10.244.0.69/16
-      gateway4: 10.244.255.254
-      nameservers: 192.168.128.2, 8.8.8.8
+      ip_adress: 72.23.11.100/24
+      gateway4: 172.23.11.254
+      nameservers: 192.168.128.2
       ldap_name: v.surtsov
       ldap_email: v.surtsov@spacevm.org
       username: vsurtsov
@@ -13,9 +13,10 @@ all:
       shell: zsh
       terraform_version: 1.3.7
       packer_version: 1.8.5
-      vagrant_version: 2.3.4
+      vagrant_version: 2.4.9
       ansible_insecure_registries: "https://192.168.150.193:5000"
       ansible_registry_mirrors: "https://docker-proxy.nexus.space.team"
+      vagrant_from_mirror: true
       vscode_extentions:
         - ms-azuretools.vscode-docker
         - MS-CEINTL.vscode-language-pack-ru
@@ -34,4 +35,6 @@ all:
         - puppet.puppet-vscode
         - ms-kubernetes-tools.vscode-kubernetes-tools
         - ms-python.debugpy
+        - donjayamanne.githistory
+        - eamodio.gitlens
         
